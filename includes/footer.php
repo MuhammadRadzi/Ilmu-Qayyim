@@ -48,6 +48,31 @@ if (!isset($base)) $base = '';
 <!-- Scroll to top button -->
 <button id="scrollUpBtn" class="scroll-up-btn" aria-label="Scroll to top" title="Kembali ke atas">↑</button>
 
+
+<!-- Dark mode toggle -->
+<button class="dark-toggle" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+    🌙
+</button>
+
+<script>
+(function() {
+    const btn  = document.getElementById('darkToggle');
+    const html = document.documentElement;
+
+    // Load preferensi tersimpan
+    const saved = localStorage.getItem('iq_theme') || 'light';
+    html.setAttribute('data-theme', saved);
+    btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+
+    btn.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme');
+        const next    = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('iq_theme', next);
+        btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+})();
+</script>
 <script>
 (function() {
     const btn = document.getElementById('scrollUpBtn');

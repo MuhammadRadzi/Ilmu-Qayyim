@@ -1,4 +1,14 @@
 <?php
+// Anti-flash dark mode — harus ada di <head> setiap halaman
+// Tapi karena navbar di-include setelah <head>, kita pakai inline script
+?>
+<script>
+(function(){
+    var t = localStorage.getItem('iq_theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+<?php
 // =============================================
 // includes/navbar.php
 // Cara pakai: require_once 'includes/navbar.php';
