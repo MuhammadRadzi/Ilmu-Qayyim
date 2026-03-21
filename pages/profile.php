@@ -16,6 +16,52 @@ $flash  = ['type' => '', 'msg' => ''];
 // ── Handle POST ───────────────────────────
 
 // Update profil
+// Upload avatar
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_avatar'])) {
+    $allowed  = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    $max_size = 2 * 1024 * 1024; // 2MB
+    $file     = $_FILES['avatar'] ?? null;
+
+    if ($file && $file['error'] === UPLOAD_ERR_OK) {
+        if (!in_array($file['type'], $allowed)) {
+            $_SESSION['avatar_error'] = 'Format harus JPG, PNG, WebP, atau GIF.';
+        } elseif ($file['size'] > $max_size) {
+            $_SESSION['avatar_error'] = 'Ukuran file maks. 2MB.';
+        } else {
+            $ext      = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $filename = 'avatar_' . $uid . '_' . time() . '.' . $ext;
+            $dest     = '../assets/images/avatars/' . $filename;
+
+            // Buat folder kalau belum ada
+            if (!is_dir('../assets/images/avatars/')) {
+                mkdir('../assets/images/avatars/', 0755, true);
+            }
+
+            if (move_uploaded_file($file['tmp_name'], $dest)) {
+                // Hapus avatar lama kalau ada
+                $old_avatar = db_fetch_one($conn, "SELECT avatar FROM users WHERE id = $uid");
+                if ($old_avatar && !empty($old_avatar['avatar'])) {
+                    $old_path = '../assets/images/avatars/' . $old_avatar['avatar'];
+                    if (file_exists($old_path)) unlink($old_path);
+                }
+
+                $stmt_av = mysqli_prepare($conn, "UPDATE users SET avatar = ? WHERE id = ?");
+                mysqli_stmt_bind_param($stmt_av, 'si', $filename, $uid);
+                mysqli_stmt_execute($stmt_av);
+                mysqli_stmt_close($stmt_av);
+
+                $_SESSION['avatar_success'] = 'Foto profil berhasil diperbarui!';
+            } else {
+                $_SESSION['avatar_error'] = 'Gagal mengupload file.';
+            }
+        }
+    } else {
+        $_SESSION['avatar_error'] = 'Pilih file terlebih dahulu.';
+    }
+    header('Location: profile.php?tab=profile');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $name    = esc($conn, $_POST['name']  ?? '');
     $email   = esc($conn, $_POST['email'] ?? '');
@@ -136,6 +182,11 @@ $best_per_subject = db_fetch_all($conn,
             position: sticky;
             top: calc(var(--nav-h) + 20px);
         }
+        .profile-avatar-wrap {
+            position: relative;
+            width: 80px;
+            margin: 0 auto 14px;
+        }
         .profile-avatar {
             width: 80px; height: 80px;
             background: var(--blue);
@@ -143,8 +194,25 @@ $best_per_subject = db_fetch_all($conn,
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 32px; font-weight: 800;
-            margin: 0 auto 14px;
         }
+        .profile-avatar-img {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+        .avatar-upload-btn {
+            position: absolute;
+            bottom: 0; right: -4px;
+            width: 26px; height: 26px;
+            background: var(--white);
+            border: 2px solid var(--blue);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; cursor: pointer;
+            transition: background var(--transition);
+        }
+        .avatar-upload-btn:hover { background: var(--blue-light); }
         .profile-name  { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
         .profile-email { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; word-break: break-all; }
         .profile-role  {
@@ -277,9 +345,39 @@ $best_per_subject = db_fetch_all($conn,
 
     <!-- ── Kartu Profil Kiri ─────────────── -->
     <aside class="profile-card">
-        <div class="profile-avatar">
-            <?= strtoupper(substr($profile['name'] ?? 'U', 0, 1)) ?>
+        <!-- Avatar upload -->
+        <?php
+        $avatar_url  = !empty($profile['avatar'])
+            ? '../assets/images/avatars/' . htmlspecialchars($profile['avatar'])
+            : null;
+        $avatar_err  = $_SESSION['avatar_error']   ?? null;
+        $avatar_ok   = $_SESSION['avatar_success'] ?? null;
+        unset($_SESSION['avatar_error'], $_SESSION['avatar_success']);
+        ?>
+        <div class="profile-avatar-wrap">
+            <?php if ($avatar_url): ?>
+            <img src="<?= $avatar_url ?>" alt="Avatar" class="profile-avatar-img">
+            <?php else: ?>
+            <div class="profile-avatar">
+                <?= strtoupper(substr($profile['name'] ?? 'U', 0, 1)) ?>
+            </div>
+            <?php endif; ?>
+            <label class="avatar-upload-btn" title="Ganti foto">
+                📷
+                <form method="POST" action="" enctype="multipart/form-data" id="avatarForm">
+                    <input type="hidden" name="upload_avatar" value="1">
+                    <input type="file" name="avatar" accept="image/*"
+                           onchange="document.getElementById('avatarForm').submit()"
+                           style="display:none;">
+                </form>
+            </label>
         </div>
+        <?php if ($avatar_err): ?>
+        <div style="font-size:11px;color:#d63031;margin-bottom:6px;"><?= htmlspecialchars($avatar_err) ?></div>
+        <?php endif; ?>
+        <?php if ($avatar_ok): ?>
+        <div style="font-size:11px;color:#28a745;margin-bottom:6px;"><?= htmlspecialchars($avatar_ok) ?></div>
+        <?php endif; ?>
         <div class="profile-name"><?= htmlspecialchars($profile['name'] ?? '') ?></div>
         <div class="profile-email"><?= htmlspecialchars($profile['email'] ?? '-') ?></div>
         <span class="profile-role"><?= ucfirst($profile['role'] ?? 'siswa') ?></span>

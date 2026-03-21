@@ -105,6 +105,9 @@ $recent_quiz = ($page === 'dashboard')
             <li><a href="index.php?page=quiz_results" class="<?= $page==='quiz_results' ? 'active':'' ?>">
                 📊 Hasil Quiz
             </a></li>
+            <li><a href="../pages/quiz_manager.php">
+                ✏️ Kelola Soal Quiz
+            </a></li>
             <li><a href="../auth/logout.php" class="logout-link">🚪 Logout</a></li>
         </ul>
     </aside>

@@ -234,6 +234,9 @@ unset($_SESSION['flash']);
             <li><a href="guru.php?page=subjects" class="<?= $page==='subjects'||$page==='chapters'?'active':'' ?>">
                 📚 Kelola Materi
             </a></li>
+            <li><a href="quiz_manager.php">
+                ✏️ Kelola Soal Quiz
+            </a></li>
             <li><a href="../auth/logout.php" class="logout-link">🚪 Logout</a></li>
         </ul>
     </aside>

@@ -45,10 +45,22 @@ $dashboard_url = match($user['role']) {
         <?php if ($user['id']): ?>
         <!-- User sudah login → tampilkan dropdown profil -->
         <li class="nav-dropdown">
+            <?php
+            // Cek avatar dari DB
+            $nav_avatar_sql = "SELECT avatar FROM users WHERE id = " . (int)$user['id'] . " LIMIT 1";
+            $nav_avatar_row = db_fetch_one($conn, $nav_avatar_sql);
+            $nav_avatar_file = $nav_avatar_row['avatar'] ?? null;
+            ?>
             <button class="nav-dropbtn" id="profileBtn">
+                <?php if (!empty($nav_avatar_file) && file_exists($base . 'assets/images/avatars/' . $nav_avatar_file)): ?>
+                <img src="<?= $base ?>assets/images/avatars/<?= htmlspecialchars($nav_avatar_file) ?>"
+                     style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);"
+                     alt="avatar">
+                <?php else: ?>
                 <span class="nav-avatar">
                     <?= strtoupper(substr($user['name'], 0, 1)) ?>
                 </span>
+                <?php endif; ?>
                 <?= htmlspecialchars(explode(' ', $user['name'])[0]) ?> ▾
             </button>
             <div class="nav-dropdown-content" id="profileDropdown">
