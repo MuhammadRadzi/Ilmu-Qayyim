@@ -60,8 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     }
 }
 
-// ── Ambil data user ───────────────────────
-$user = db_fetch_one($conn, "SELECT * FROM users WHERE id = $uid LIMIT 1");
+// ── Ambil data user (prepared statement agar semua kolom terbaca) ──
+$stmt_u = mysqli_prepare($conn, "SELECT id, name, email, role, avatar, created_at FROM users WHERE id = ? LIMIT 1");
+mysqli_stmt_bind_param($stmt_u, 'i', $uid);
+mysqli_stmt_execute($stmt_u);
+$user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_u));
+mysqli_stmt_close($stmt_u);
 
 // ── Statistik quiz ────────────────────────
 $quiz_stats = db_fetch_one($conn,
@@ -441,7 +445,7 @@ $best_per_subject = db_fetch_all($conn,
                         </td>
                         <td>
                             <a href="quiz.php?slug=<?= urlencode($r['slug']) ?>"
-                               style="color:var(--blue);font-size:12px;font-weight:700;white-space:nowrap;">
+                                style="color:var(--blue);font-size:12px;font-weight:700;white-space:nowrap;">
                                 Ulangi →
                             </a>
                         </td>
