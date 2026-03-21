@@ -72,16 +72,7 @@
 }
 #navbar.scrolled .nav-logout { color: #ffb3b3 !important; }
 
-/* Dropdown selalu putih + teks gelap — tidak peduli navbar scrolled atau tidak */
-#navbar.scrolled .nav-dropdown-content { background: #ffffff; }
-#navbar.scrolled .nav-dropdown-content a { color: #2d3436; }
-#navbar.scrolled .nav-dropdown-content a:hover { background: #f1f2f6; }
-#navbar.scrolled .nav-dropdown-header { background: #e8f1fb; }
-#navbar.scrolled .nav-dropdown-name { color: #2d3436; }
-#navbar.scrolled .nav-dropdown-role { color: #636e72; }
-#navbar.scrolled .nav-logout { color: #e74c3c !important; }
-[data-theme="dark"] #navbar.scrolled .nav-dropdown-content { background: #1e1e2e; }
-[data-theme="dark"] #navbar.scrolled .nav-dropdown-content a { color: #e0e0f0; }
+
 
 [data-theme="dark"] .banner::after {
     background: linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 100%);
