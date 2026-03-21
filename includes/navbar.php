@@ -62,9 +62,8 @@ $dashboard_url = match($user['role']) {
                     </div>
                 </div>
                 <div class="nav-dropdown-divider"></div>
-                <a href="<?= $dashboard_url ?>">
-                    <span>&#9776;</span> Dashboard
-                </a>
+                <a href="<?= $dashboard_url ?>">&#9776; Dashboard</a>
+                <a href="<?= $base ?>pages/profile.php">&#128100; Profil Saya</a>
                 <div class="nav-dropdown-divider"></div>
                 <a href="<?= $base ?>auth/logout.php" class="nav-logout">
                     Keluar
