@@ -9,6 +9,8 @@ require_login('../auth/login.php');
 
 $base   = '../';
 $uid    = (int) $_SESSION['user_id'];
+
+
 $flash  = ['type' => '', 'msg' => ''];
 
 // ── Handle POST ───────────────────────────
@@ -64,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 $stmt_u = mysqli_prepare($conn, "SELECT id, name, email, role, avatar, created_at FROM users WHERE id = ? LIMIT 1");
 mysqli_stmt_bind_param($stmt_u, 'i', $uid);
 mysqli_stmt_execute($stmt_u);
-$user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_u));
+$profile = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_u));
 mysqli_stmt_close($stmt_u);
 
 // ── Statistik quiz ────────────────────────
@@ -276,11 +278,11 @@ $best_per_subject = db_fetch_all($conn,
     <!-- ── Kartu Profil Kiri ─────────────── -->
     <aside class="profile-card">
         <div class="profile-avatar">
-            <?= strtoupper(substr($user['name'] ?? 'U', 0, 1)) ?>
+            <?= strtoupper(substr($profile['name'] ?? 'U', 0, 1)) ?>
         </div>
-        <div class="profile-name"><?= htmlspecialchars($user['name'] ?? '') ?></div>
-        <div class="profile-email"><?= htmlspecialchars($user['email'] ?? '-') ?></div>
-        <span class="profile-role"><?= ucfirst($user['role'] ?? 'siswa') ?></span>
+        <div class="profile-name"><?= htmlspecialchars($profile['name'] ?? '') ?></div>
+        <div class="profile-email"><?= htmlspecialchars($profile['email'] ?? '-') ?></div>
+        <span class="profile-role"><?= ucfirst($profile['role'] ?? 'siswa') ?></span>
 
         <div class="mini-stats">
             <div class="mini-stat">
@@ -302,7 +304,7 @@ $best_per_subject = db_fetch_all($conn,
         </div>
 
         <div class="profile-since">
-            Bergabung sejak <?= !empty($user['created_at']) ? date('d M Y', strtotime($user['created_at'])) : '-' ?>
+            Bergabung sejak <?= !empty($profile['created_at']) ? date('d M Y', strtotime($profile['created_at'])) : '-' ?>
         </div>
     </aside>
 
@@ -342,12 +344,12 @@ $best_per_subject = db_fetch_all($conn,
                     <div class="form-group">
                         <label>Nama Lengkap</label>
                         <input type="text" name="name" required
-                               value="<?= htmlspecialchars($user['name']) ?>">
+                               value="<?= htmlspecialchars($profile['name']) ?>">
                     </div>
                     <div class="form-group">
                         <label>Email</label>
                         <input type="email" name="email" required
-                               value="<?= htmlspecialchars($user['email'] ?? '') ?>">
+                               value="<?= htmlspecialchars($profile['email'] ?? '') ?>">
                     </div>
                 </div>
 
@@ -445,7 +447,7 @@ $best_per_subject = db_fetch_all($conn,
                         </td>
                         <td>
                             <a href="quiz.php?slug=<?= urlencode($r['slug']) ?>"
-                                style="color:var(--blue);font-size:12px;font-weight:700;white-space:nowrap;">
+                               style="color:var(--blue);font-size:12px;font-weight:700;white-space:nowrap;">
                                 Ulangi →
                             </a>
                         </td>
