@@ -29,28 +29,34 @@
 
 /* ── Dark Mode ────────────────────────────── */
 [data-theme="dark"] {
-    --blue:        #4d8fd1;
-    --blue-dark:   #3a78be;
-    --blue-light:  #1a2e45;
-    --white:       #1e1e2e;
-    --bg:          #13131f;
-    --text:        #e0e0f0;
-    --text-muted:  #9090b0;
-    --border:      #2e2e45;
-    --shadow:      0 4px 16px rgba(0,0,0,0.4);
-    --shadow-lg:   0 8px 28px rgba(0,0,0,0.5);
+    --blue:        #5b9fd4;
+    --blue-dark:   #4a8ec3;
+    --blue-light:  #1c2d3e;
+    --white:       #1f2335;
+    --bg:          #161b2e;
+    --text:        #cdd6f4;
+    --text-muted:  #7f849c;
+    --border:      #313557;
+    --shadow:      0 4px 16px rgba(0,0,0,0.35);
+    --shadow-lg:   0 8px 28px rgba(0,0,0,0.45);
 }
 
-[data-theme="dark"] #navbar:not(.scrolled) .nav-logo-text { color: #e0e0f0; }
-[data-theme="dark"] #navbar:not(.scrolled) .nav-links li a { color: #e0e0f0; }
-[data-theme="dark"] #navbar:not(.scrolled) .nav-dropbtn   { color: #e0e0f0; }
-[data-theme="dark"] #navbar:not(.scrolled) .hamburger     { color: #e0e0f0; }
+[data-theme="dark"] #navbar:not(.scrolled) .nav-logo-text { color: #cdd6f4; }
+[data-theme="dark"] #navbar:not(.scrolled) .nav-links li a { color: #cdd6f4; }
+[data-theme="dark"] #navbar:not(.scrolled) .nav-dropbtn   { color: #cdd6f4; }
+[data-theme="dark"] #navbar:not(.scrolled) .hamburger     { color: #cdd6f4; }
 
-[data-theme="dark"] .nav-dropdown-content { background: #1e1e2e; border-color: #2e2e45; }
-[data-theme="dark"] .nav-dropdown-header  { background: #1a2e45; }
-[data-theme="dark"] .nav-dropdown-name    { color: #e0e0f0; }
-[data-theme="dark"] .nav-dropdown-content a { color: #e0e0f0; }
-[data-theme="dark"] .nav-dropdown-content a:hover { background: #13131f; }
+/* Dark mode — navbar background sebelum scroll */
+[data-theme="dark"] #navbar:not(.scrolled) {
+    background: rgba(22, 27, 46, 0.85);
+    backdrop-filter: blur(6px);
+}
+
+[data-theme="dark"] .nav-dropdown-content { background: #1f2335; border-color: #313557; }
+[data-theme="dark"] .nav-dropdown-header  { background: #1c2d3e; }
+[data-theme="dark"] .nav-dropdown-name    { color: #cdd6f4; }
+[data-theme="dark"] .nav-dropdown-content a { color: #cdd6f4; }
+[data-theme="dark"] .nav-dropdown-content a:hover { background: #161b2e; }
 
 /* Dropdown saat navbar scrolled — background biru */
 #navbar.scrolled .nav-dropdown-content {
@@ -82,15 +88,30 @@
 [data-theme="dark"] .data-table tr:hover td { background: #1a2e45; }
 
 [data-theme="dark"] .form-group input,
-[data-theme="dark"] .form-group textarea  { background: #13131f; color: #e0e0f0; border-color: #2e2e45; }
+[data-theme="dark"] .form-group textarea  { background: #161b2e; color: #cdd6f4; border-color: #313557; }
 [data-theme="dark"] .form-group input:focus,
-[data-theme="dark"] .form-group textarea:focus { background: #1e1e2e; border-color: var(--blue); }
+[data-theme="dark"] .form-group textarea:focus { background: #1f2335; border-color: var(--blue); }
+[data-theme="dark"] .form-group label { color: #a6adc8; }
 
-[data-theme="dark"] .subject-select-wrap select { background: #13131f; color: #e0e0f0; }
-[data-theme="dark"] .add-question-box textarea   { background: #13131f; color: #e0e0f0; }
-[data-theme="dark"] .option-row input[type=text] { background: #13131f; color: #e0e0f0; }
+[data-theme="dark"] .subject-select-wrap select { background: #161b2e; color: #cdd6f4; border-color: #313557; }
+[data-theme="dark"] .add-question-box textarea   { background: #161b2e; color: #cdd6f4; border-color: #313557; }
+[data-theme="dark"] .option-row input[type=text] { background: #161b2e; color: #cdd6f4; border-color: #313557; }
 
-[data-theme="dark"] .footer { background: #0d0d1a; }
+/* Tambahan dark mode */
+[data-theme="dark"] .card-title  { color: #cdd6f4; }
+[data-theme="dark"] .card-desc   { color: #7f849c; }
+[data-theme="dark"] .stat-card h3 { color: #7f849c; }
+[data-theme="dark"] .dash-header h1 { color: #5b9fd4; }
+[data-theme="dark"] .dash-header p  { color: #7f849c; }
+[data-theme="dark"] .data-table th  { background: #2a3f5c; }
+[data-theme="dark"] .question-card h3 { color: #cdd6f4; }
+[data-theme="dark"] .nav-dropdown-role { color: #7f849c; }
+[data-theme="dark"] .about-alt { background: #1c2d3e; }
+
+[data-theme="dark"] .footer { background: #0f1224; }
+[data-theme="dark"] .footer .footer-brand span { color: #cdd6f4; }
+[data-theme="dark"] .footer .footer-tagline    { color: #7f849c; }
+[data-theme="dark"] .footer .footer-copy       { color: #6c7086; }
 
 /* Toggle button */
 .dark-toggle {
